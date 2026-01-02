@@ -51,6 +51,7 @@ def create_movie(movie: Movie):
 
     return movie
 
+@app.delete("/movies/{movie_id}", tags=["Movies"])
 def delete_movie(movie_id: int):
     movie = delete_movie_by_id(movie_id)
     if movie is None:

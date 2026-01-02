@@ -28,7 +28,6 @@ def read_movie_by_id(movie_id: int) -> dict | None:
         return None
     return result.iloc[0].to_dict()
 
-
 def insert_movie(
     id: int,
     title: str,

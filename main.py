@@ -6,7 +6,8 @@ from excel_service import (
     read_all_movies,
     read_movie_by_id,
     insert_movie,
-    delete_movie_by_id
+    delete_movie_by_id,
+    update_movie_by_id
 )
 from schemas.movie import Movie
 
@@ -57,3 +58,18 @@ def delete_movie(movie_id: int):
     if movie is None:
         raise HTTPException(status_code=404, detail="Movie not found")
     return movie
+
+@app.put("/movies/{movie_id}", response_model=Movie, tags=["Movies"])
+def replace_movie(movie_id: int, movie: Movie):
+    updated = update_movie_by_id(
+        movie_id,
+        movie.title,
+        movie.category,
+        movie.year,
+        movie.stars
+    )
+
+    if updated is None:
+        raise HTTPException(status_code=404, detail="Movie not found")
+
+    return movie 

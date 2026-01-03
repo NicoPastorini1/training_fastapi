@@ -63,3 +63,28 @@ def delete_movie_by_id(movie_id: int) -> dict | None:
     df.to_excel(excel_name, index=False)
 
     return deleted_movie
+
+def update_movie_by_id(
+    id: int,
+    title: str,
+    category: str,
+    year: int,
+    stars: int) -> dict | None:
+    
+    df = _read_df()
+    
+    mask = df["id"] == id
+    
+    if not mask.any():
+        return None
+    
+    old_movie = df.loc[mask].iloc[0].to_dict()
+    
+    df.loc[mask, title] = title
+    df.loc[mask, category] = category
+    df.loc[mask, year] = year
+    df.loc[mask, stars] = stars
+    
+    _write_df = (df)
+    
+    return old_movie

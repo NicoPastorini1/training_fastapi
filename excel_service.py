@@ -1,5 +1,6 @@
 from pathlib import Path
 import pandas as pd
+from schemas.movie import Movie
 
 excel_name = Path("IMDb Movies.xlsx")
 COLUMNS = ["id", "title", "category", "year", "stars"]
@@ -28,26 +29,13 @@ def read_movie_by_id(movie_id: int) -> dict | None:
         return None
     return result.iloc[0].to_dict()
 
-def insert_movie(
-    id: int,
-    title: str,
-    category: str,
-    year: int,
-    stars: int
-) -> None:
+def insert_movie(movie: Movie) -> None:
     df = _read_df()
 
-    if (df["id"] == id).any():
-        raise ValueError(f"Ya existe una película con id={id}")
+    if (df["id"] == movie.id).any():
+        raise ValueError(f"Ya existe una película con id={movie.id}")
 
-    new_row = pd.DataFrame([{
-        "id": id,
-        "title": title,
-        "category": category,
-        "year": year,
-        "stars": stars
-    }])
-
+    new_row = pd.DataFrame([movie.model_dump()])
     df = pd.concat([df, new_row], ignore_index=True)
     df.to_excel(excel_name, index=False)
 

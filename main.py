@@ -17,9 +17,7 @@ async def lifespan(app: FastAPI):
     ensure_excel_exists()
     yield
 
-
 app = FastAPI(lifespan=lifespan)
-
 
 # GET /movies
 @app.get("/movies", response_model=list[Movie], tags=["Movies"])
